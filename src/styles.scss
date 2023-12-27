@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+// @keyframes beat {
+//     0%, 50%, 100% { transform: scale(1, 1); }
+//     30%, 80% { transform: scale(0.92, 0.95); }
+//   }
+
+//   .heart{
+//     position: relative;
+//     width: 100px;
+//     height: 90px;
+//     animation: 1.5s ease 0s infinite beat;
+// }
+
+
+@keyframes opacando {
+    0%, 100% {
+        opacity: .05;
+    }
+    50% {
+        opacity: .5;
+    }
+    
+}
+
+.animate-aparece	{ 
+    animation: opacando 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

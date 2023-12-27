@@ -40,32 +40,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-src/assets/series/bluey/\[S03.E25\] Bluey - Cuentos.mp4
-src/assets/series/bluey/\[S03.E24\] Bluey - Muñeco.mp4
-src/assets/series/bluey/\[S03.E23\] Bluey - Faceytalk.mp4
-src/assets/series/bluey/\[S03.E22\] Bluey - Las ballenas.mp4
-src/assets/series/bluey/\[S03.E21\] Bluey - Tina.mp4
-src/assets/series/bluey/\[S03.E20\] Bluey - Conduciendo.mp4
-src/assets/series/bluey/\[S03.E19\] Bluey - Chicas pizza.mp4
-src/assets/series/bluey/\[S03.E18\] Bluey - Lluvia.mp4
-src/assets/series/bluey/\[S03.E17\] Bluey - Pavlova.mp4
-src/assets/series/bluey/\[S03.E16\] Bluey - Celulares.mp4
-src/assets/series/bluey/\[S03.E15\] Bluey - Exploradores.mp4
-src/assets/series/bluey/\[S03.E14\] Bluey - Perfecto.mp4
-src/assets/series/bluey/\[S03.E13\] Bluey - Juego del paquete.mp4
-src/assets/series/bluey/\[S03.E12\] Bluey - Limpieza.mp4
-src/assets/series/bluey/\[S03.E11\] Bluey - Perro oveja.mp4
-src/assets/series/bluey/\[S03.E10\] Bluey - Ajedrez.mp4
-src/assets/series/bluey/\[S03.E09\] Bluey - Magia.mp4
-src/assets/series/bluey/\[S03.E08\] Bluey - Intercambio de curry.mp4
-src/assets/series/bluey/\[S03.E07\] Bluey - Unicorse.mp4
-src/assets/series/bluey/\[S03.E06\] Bluey - Mini Bluey.mp4
-src/assets/series/bluey/\[S03.E05\] Bluey - Nací ayer.mp4
-src/assets/series/bluey/\[S03.E04\] Bluey - Omelette.mp4
-src/assets/series/bluey/\[S03.E03\] Bluey - Promesas.mp4
-src/assets/series/bluey/\[S03.E02\] Bluey - Carrera de obstáculos.mp4
-src/assets/series/bluey/\[S03.E01\] Bluey - El cuarto.mp4
-src/assets/series/bluey.jpeg
-src/assets/peliculas/buzacaperuza/buzacaperuzatexto.png
-src/assets/peliculas/buzacaperuza/buzacaperuzalabel.jpg
-src/assets/peliculas/buzacaperuza/buza caperuza la verdadera historia.mp4
+src/assets/series/*
+src/assets/peliculas/*

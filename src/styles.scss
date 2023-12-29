@@ -28,3 +28,27 @@
 .animate-aparece	{ 
     animation: opacando 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+
+
+.contenedor:hover  {
+
+transition: transform 0.3s;
+-ms-transform: scale(1.05);
+-webkit-transform: scale(1.05);
+transform: scale(1.05);
+
+}
+
+
+@layer utilities {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+   /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+  }
+}

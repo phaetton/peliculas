@@ -1,1 +1,242 @@
-<p>pelicula works!</p>
+<h1> {{videoInfo.titulo | json}}
+
+  <p> {{videoInfo.descripcion | json}} </p>
+
+
+  <div class="relative flex flex-wrap items-center justify-center  h-auto p-2">
+
+    <video class="h-96 " #videoPlayer (loadedmetadata)="onMetadata($event, videoPlayer)" 
+      (timeupdate)="onTimeUpdate($event, videoPlayer)">
+      <source src="../../../assets/peliculas/buzacaperuza/buza caperuza la verdadera historia.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+
+
+    <div class="fixex  w-full flex justify-center space-x-4  text-xs z-50">
+      <span *ngIf="posicion"> {{posicion}} </span>
+
+      <div class="w-96 bg-gray-200 rounded-full dark:bg-gray-700">
+        <div class=" bg-blue-600font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+          [style]="'width:'+progreso+'%'"> {{progreso}}%</div>
+      </div>
+      <span *ngIf="duracion"> {{duracion }} </span>
+
+    </div>
+
+
+    <div class="  w-full flex justify-center text-slate-500 dark:bg-slate-600 dark:text-slate-200 rounded-b-xl ">
+      <!-- <div class="flex-auto flex items-center justify-evenly">
+      <button type="button" aria-label="Add to favorites">
+        <svg width="24" height="24">
+          <path d="M7 6.931C7 5.865 7.853 5 8.905 5h6.19C16.147 5 17 5.865 17 6.931V19l-5-4-5 4V6.931Z"
+            fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button" class="hidden sm:block lg:hidden xl:block" aria-label="Previous">
+        <svg width="24" height="24" fill="none">
+          <path d="m10 12 8-6v12l-8-6Z" fill="currentColor" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M6 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button" aria-label="Rewind 10 seconds">
+        <svg width="24" height="24" fill="none">
+          <path
+            d="M6.492 16.95c2.861 2.733 7.5 2.733 10.362 0 2.861-2.734 2.861-7.166 0-9.9-2.862-2.733-7.501-2.733-10.362 0A7.096 7.096 0 0 0 5.5 8.226"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M5 5v3.111c0 .491.398.889.889.889H9" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div> -->
+
+
+      <dl class="mt-5 mb-2 flex gap-8   ">
+        <div>
+          <button type="button" *ngIf="!reproducir" (click)=" reproducirVideo()"
+            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+
+
+              <path
+                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z">
+              </path>
+
+            </svg>
+          </button>
+
+          <button type="button" *ngIf="reproducir" (click)=" pausarVideo()"
+            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+
+
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z">
+              </path>
+
+            </svg>
+          </button>
+
+        </div>
+
+        <div>
+          <button type="button" (click)=" detenerVideo()"
+            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z">
+              </path>
+
+            </svg>
+
+          </button>
+        </div>
+        <div class="flex space-x-3">
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+            <button type="button" (click)=" atrasar600()"
+              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">-10m</span>
+
+
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z">
+                </path>
+
+              </svg>
+            </button>
+          </dd>
+
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+            <button type="button" (click)=" atrasar100()"
+              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">-1m</span>
+
+
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z">
+                </path>
+
+              </svg>
+            </button>
+          </dd>
+
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+            <button type="button" (click)=" adelantar100()"
+              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">+1m</span>
+
+
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                  d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z">
+                </path>
+
+              </svg>
+
+            </button>
+          </dd>
+
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+            <button type="button" (click)=" adelantar600()"
+              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">+10m</span>
+
+
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                  d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z">
+                </path>
+
+              </svg>
+
+            </button>
+          </dd>
+
+
+
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+            <button type="button" (click)="pantallaCompleta()"
+              class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z">
+                </path>
+
+              </svg>
+
+            </button>
+          </dd>
+
+
+        </div>
+        <div>
+          <button type="button"
+            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z">
+              </path>
+
+            </svg>
+
+          </button>
+        </div>
+      </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- 
+    <div class="flex-auto flex items-center justify-evenly">
+      <button type="button" aria-label="Skip 10 seconds">
+        <svg width="24" height="24" fill="none">
+          <path
+            d="M17.509 16.95c-2.862 2.733-7.501 2.733-10.363 0-2.861-2.734-2.861-7.166 0-9.9 2.862-2.733 7.501-2.733 10.363 0 .38.365.711.759.991 1.176"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 5v3.111c0 .491-.398.889-.889.889H15" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button" class="hidden sm:block lg:hidden xl:block" aria-label="Next">
+        <svg width="24" height="24" fill="none">
+          <path d="M14 12 6 6v12l8-6Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M18 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button"
+        class="rounded-lg text-xs leading-6 font-semibold px-2 ring-2 ring-inset ring-slate-500 text-slate-500 dark:text-slate-100 dark:ring-0 dark:bg-slate-500">
+        1x
+      </button>
+    </div> -->
+    </div>
+
+  </div>

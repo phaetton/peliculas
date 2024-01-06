@@ -13,7 +13,7 @@ import { BuscarComponent } from './buscar/buscar.component';
     BuscarComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ]
 })
 export class PagesModule { }

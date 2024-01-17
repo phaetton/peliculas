@@ -18,7 +18,6 @@ export class PeliculasService {
       accept: 'application/json',
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYTg2Mjc2NDI4ZjQwY2IxMTdjMjY2YzJjMzE3OGVmYSIsInN1YiI6IjY1OGVmYTlkMGQyZjUzNWRkMGQzYmU1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MaRTC18-txUZiVu-n8TaRsOGuIbgFqCARd2-RTv2VJg'
     },
-    page: this.peliculaPage.toString()
   };
 
 

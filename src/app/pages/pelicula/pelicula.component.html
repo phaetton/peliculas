@@ -1,32 +1,243 @@
-<h1> {{videoInfo.titulo | json}}
-
-  <p> {{videoInfo.descripcion | json}} </p>
-
-
-  <div class="relative flex flex-wrap items-center justify-center  h-auto p-2">
-
-    <video class="h-96 " #videoPlayer (loadedmetadata)="onMetadata($event, videoPlayer)" 
-      (timeupdate)="onTimeUpdate($event, videoPlayer)">
-      <source src="../../../assets/peliculas/buzacaperuza/buza caperuza la verdadera historia.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
+<div class="relative top-0 left-0 py-20 w-full isolate overflow-hidden ">
 
 
 
-    <div class="fixex  w-full flex justify-center space-x-4  text-xs z-50">
-      <span *ngIf="posicion"> {{posicion}} </span>
+  <img
+    [src]="pelicula.poster_path==null ?'../../../assets/predefinida.png': 'https://image.tmdb.org/t/p/w500'+pelicula.backdrop_path"
+    class="opacity-15 absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center">
 
-      <div class="w-96 bg-gray-200 rounded-full dark:bg-gray-700">
-        <div class=" bg-blue-600font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-          [style]="'width:'+progreso+'%'"> {{progreso}}%</div>
+  <img
+    [src]="pelicula.poster_path==null ?'../../../assets/predefinida.png': 'https://image.tmdb.org/t/p/w500'+pelicula.poster_path"
+    class="absolute top-10 shadow-lg left-10 z-20 w-52" />
+
+  <div class="ml-60 max-w-7xl px-6  ">
+    <div class="mx-auto  lg:mx-0">
+      <h2 class="text-4xl font-bold tracking-tight text-white sm:text-4xl">{{pelicula.title}}</h2>
+      <div *ngIf="pelicula.tagline">{{pelicula.tagline}}</div>
+
+      <div class="flex items-center">
+        <fieldset class="rating mt-4">
+          <input type="radio" id="star5" name="rating" value="5" [checked]="pelicula.vote_average >= 10 " />
+          <label class="full" for="star5" title="Awesome - 5 stars"></label>
+          <input type="radio" id="star4half" name="rating" value="4 and a half"
+            [checked]="pelicula.vote_average >= 9 && pelicula.vote_average <10" />
+          <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+          <input type="radio" id="star4" name="rating" value="4"
+            [checked]="pelicula.vote_average >=8 && pelicula.vote_average <9" />
+          <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+          <input type="radio" id="star3half" name="rating" value="3 and a half"
+            [checked]="pelicula.vote_average >=7 && pelicula.vote_average <8" />
+          <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+          <input type="radio" id="star3" name="rating" value="3"
+            [checked]="pelicula.vote_average >=6 && pelicula.vote_average <7" />
+          <label class="full" for="star3" title="Meh - 3 stars"></label>
+          <input type="radio" id="star2half" name="rating" value="2 and a half"
+            [checked]="pelicula.vote_average >=5 && pelicula.vote_average <6" />
+          <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+          <input type="radio" id="star2" name="rating" value="2"
+            [checked]="pelicula.vote_average >= 4 && pelicula.vote_average <5" />
+          <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+          <input type="radio" id="star1half" name="rating" value="1 and a half"
+            [checked]="pelicula.vote_average >= 3 && pelicula.vote_average <4" />
+          <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+          <input type="radio" id="star1" name="rating" value="1"
+            [checked]="pelicula.vote_average >= 2 && pelicula.vote_average <3" />
+          <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+          <input type="radio" id="starhalf" name="rating" value="half"
+            [checked]="pelicula.vote_average >= 1 && pelicula.vote_average <2" />
+          <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+        </fieldset>
+
+
+        <div class="  ml-7 relative top-1 pr-2 flex items-center space-x-2"><svg class="w-4 h-4 fill-red-500"
+            viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+            <path
+              d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z">
+            </path>
+
+          </svg><span> {{pelicula.vote_count}} likes</span>
+        </div>
       </div>
-      <span *ngIf="duracion"> {{duracion }} </span>
+      <p class="mt-6 text-sm leading-6 text-gray-300 ">{{pelicula.overview}} .</p>
+    </div>
+    <div class="mx-auto mt-5 max-w-2xl lg:mx-0 lg:max-w-none">
+      <div class="  grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2
+         md:flex lg:gap-x-10">
+
+
+        <a href="#" class="flex items-center space-x-2" *ngFor="let genero of pelicula.genres">
+          {{genero.name}}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+          </svg> </a>
+
+
+
+
+      </div>
+      <dl class="mt-5 mb-2 flex gap-8   ">
+        <div>
+          <button type="button"
+            class="rounded-full bg-gray-600 p-4 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+
+
+              <path
+                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z">
+              </path>
+
+            </svg>
+          </button>
+        </div>
+
+        <div>
+          <button type="button"
+            class="rounded-full bg-gray-600 p-4 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z">
+              </path>
+
+            </svg>
+
+          </button>
+        </div>
+        <div class="flex space-x-3">
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white"> <button type="button"
+              class="rounded-full bg-gray-600 p-4 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                  d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z">
+                </path>
+
+              </svg>
+
+            </button>
+          </dd>
+          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+            <button type="button"
+              class="rounded-full bg-gray-600 p-4 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                  d="M313.4 479.1c26-5.2 42.9-30.5 37.7-56.5l-2.3-11.4c-5.3-26.7-15.1-52.1-28.8-75.2H464c26.5 0 48-21.5 48-48c0-18.5-10.5-34.6-25.9-42.6C497 236.6 504 223.1 504 208c0-23.4-16.8-42.9-38.9-47.1c4.4-7.3 6.9-15.8 6.9-24.9c0-21.3-13.9-39.4-33.1-45.6c.7-3.3 1.1-6.8 1.1-10.4c0-26.5-21.5-48-48-48H294.5c-19 0-37.5 5.6-53.3 16.1L202.7 73.8C176 91.6 160 121.6 160 153.7V192v48 24.9c0 29.2 13.3 56.7 36 75l7.4 5.9c26.5 21.2 44.6 51 51.2 84.2l2.3 11.4c5.2 26 30.5 42.9 56.5 37.7zM32 384H96c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H32C14.3 96 0 110.3 0 128V352c0 17.7 14.3 32 32 32z">
+                </path>
+
+              </svg>
+
+            </button>
+          </dd>
+
+
+        </div>
+        <div>
+          <button type="button"
+            class="rounded-full bg-gray-600 p-4 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z">
+              </path>
+
+            </svg>
+
+          </button>
+        </div>
+      </dl>
 
     </div>
+  </div>
+</div>
 
 
-    <div class="  w-full flex justify-center text-slate-500 dark:bg-slate-600 dark:text-slate-200 rounded-b-xl ">
-      <!-- <div class="flex-auto flex items-center justify-evenly">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+    <div class="flex-auto flex items-center justify-evenly">
+      <button type="button" aria-label="Skip 10 seconds">
+        <svg width="24" height="24" fill="none">
+          <path
+            d="M17.509 16.95c-2.862 2.733-7.501 2.733-10.363 0-2.861-2.734-2.861-7.166 0-9.9 2.862-2.733 7.501-2.733 10.363 0 .38.365.711.759.991 1.176"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 5v3.111c0 .491-.398.889-.889.889H15" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button" class="hidden sm:block lg:hidden xl:block" aria-label="Next">
+        <svg width="24" height="24" fill="none">
+          <path d="M14 12 6 6v12l8-6Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M18 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button type="button"
+        class="rounded-lg text-xs leading-6 font-semibold px-2 ring-2 ring-inset ring-slate-500 text-slate-500 dark:text-slate-100 dark:ring-0 dark:bg-slate-500">
+        1x
+      </button>
+    </div> -->
+
+
+
+
+<!-- 
+<h1> {{videoInfo.titulo | json}}
+
+  <p> {{videoInfo.descripcion | json}} </p> -->
+
+
+<div class="relative flex flex-wrap items-center justify-center  h-auto py-8">
+
+  <video class="h-96 " #videoPlayer (loadedmetadata)="onMetadata($event, videoPlayer)"
+    (timeupdate)="onTimeUpdate($event, videoPlayer)">
+    <source src="../../../assets/peliculas/buzacaperuza/buza caperuza la verdadera historia.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+
+
+  <div class="fixex  w-full flex justify-center space-x-4  text-xs z-50">
+    <span *ngIf="posicion"> {{posicion}} </span>
+
+    <div class="w-96 bg-gray-200 rounded-full dark:bg-gray-700">
+      <div class=" bg-blue-600font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+        [style]="'width:'+progreso+'%'"> {{progreso}}%</div>
+    </div>
+    <span *ngIf="duracion"> {{duracion }} </span>
+
+  </div>
+
+
+  <div class="  w-full flex justify-center text-slate-500 dark:bg-slate-600 dark:text-slate-200 rounded-b-xl ">
+    <!-- <div class="flex-auto flex items-center justify-evenly">
       <button type="button" aria-label="Add to favorites">
         <svg width="24" height="24">
           <path d="M7 6.931C7 5.865 7.853 5 8.905 5h6.19C16.147 5 17 5.865 17 6.931V19l-5-4-5 4V6.931Z"
@@ -52,191 +263,156 @@
     </div> -->
 
 
-      <dl class="mt-5 mb-2 flex gap-8   ">
-        <div>
-          <button type="button" *ngIf="!reproducir" (click)=" reproducirVideo()"
-            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+    <dl class="mt-5 mb-2 flex gap-8   ">
+      <div>
+        <button type="button" *ngIf="!reproducir" (click)=" reproducirVideo()"
+          class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+          <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
 
 
+            <path
+              d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z">
+            </path>
+
+          </svg>
+        </button>
+
+        <button type="button" *ngIf="reproducir" (click)=" pausarVideo()"
+          class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+
+
+          <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
+
+            <path
+              d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z">
+            </path>
+
+          </svg>
+        </button>
+
+      </div>
+
+      <div>
+        <button type="button" (click)=" detenerVideo()"
+          class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+          <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+
+            <path
+              d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z">
+            </path>
+
+          </svg>
+
+        </button>
+      </div>
+      <div class="flex space-x-3">
+        <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+          <button type="button" (click)=" atrasar600()"
+            class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+            <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">-10m</span>
+
+
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
-                d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z">
+                d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z">
               </path>
 
             </svg>
           </button>
+        </dd>
 
-          <button type="button" *ngIf="reproducir" (click)=" pausarVideo()"
-            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+        <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+          <button type="button" (click)=" atrasar100()"
+            class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+            <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">-1m</span>
 
 
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 
-            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
-
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
-                d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z">
+                d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z">
               </path>
 
             </svg>
           </button>
+        </dd>
 
-        </div>
+        <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+          <button type="button" (click)=" adelantar100()"
+            class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
 
-        <div>
-          <button type="button" (click)=" detenerVideo()"
-            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-
-              <path
-                d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z">
-              </path>
-
-            </svg>
-
-          </button>
-        </div>
-        <div class="flex space-x-3">
-          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
-            <button type="button" (click)=" atrasar600()"
-              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-
-              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">-10m</span>
+            <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">+1m</span>
 
 
-              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-
-                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path
-                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z">
-                </path>
-
-              </svg>
-            </button>
-          </dd>
-
-          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
-            <button type="button" (click)=" atrasar100()"
-              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-
-              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">-1m</span>
-
-
-              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-
-                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path
-                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L301.3 256 438.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z">
-                </path>
-
-              </svg>
-            </button>
-          </dd>
-
-          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
-            <button type="button" (click)=" adelantar100()"
-              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-
-              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">+1m</span>
-
-
-              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-
-                <path
-                  d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z">
-                </path>
-
-              </svg>
-
-            </button>
-          </dd>
-
-          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
-            <button type="button" (click)=" adelantar600()"
-              class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-
-              <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">+10m</span>
-
-
-              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-
-                <path
-                  d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z">
-                </path>
-
-              </svg>
-
-            </button>
-          </dd>
-
-
-
-          <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
-            <button type="button" (click)="pantallaCompleta()"
-              class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-              <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-
-                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path
-                  d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z">
-                </path>
-
-              </svg>
-
-            </button>
-          </dd>
-
-
-        </div>
-        <div>
-          <button type="button"
-            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 
               <path
-                d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z">
+                d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z">
               </path>
 
             </svg>
 
           </button>
-        </div>
-      </dl>
+        </dd>
+
+        <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+          <button type="button" (click)=" adelantar600()"
+            class="relative rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+
+            <span class="absolute -top-2 right-0 rounded-full bg-red-500 p-0.5 px-2 text-xs text-red-50">+10m</span>
+
+
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M470.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 256 265.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L210.7 256 73.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z">
+              </path>
+
+            </svg>
+
+          </button>
+        </dd>
 
 
 
+        <dd class="text-2xl font-bold leading-9 tracking-tight text-white">
+          <button type="button" (click)="pantallaCompleta()"
+            class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+
+              <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+              <path
+                d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z">
+              </path>
+
+            </svg>
+
+          </button>
+        </dd>
 
 
+      </div>
+      <div>
+        <button type="button"
+          class="rounded-full bg-gray-600 p-2 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+          <svg class="w-5 h-5 fill-white m-1" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg">
 
+            <path
+              d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z">
+            </path>
 
+          </svg>
 
-
-
-
-
-
-      <!-- 
-    <div class="flex-auto flex items-center justify-evenly">
-      <button type="button" aria-label="Skip 10 seconds">
-        <svg width="24" height="24" fill="none">
-          <path
-            d="M17.509 16.95c-2.862 2.733-7.501 2.733-10.363 0-2.861-2.734-2.861-7.166 0-9.9 2.862-2.733 7.501-2.733 10.363 0 .38.365.711.759.991 1.176"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M19 5v3.111c0 .491-.398.889-.889.889H15" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <button type="button" class="hidden sm:block lg:hidden xl:block" aria-label="Next">
-        <svg width="24" height="24" fill="none">
-          <path d="M14 12 6 6v12l8-6Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" />
-          <path d="M18 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <button type="button"
-        class="rounded-lg text-xs leading-6 font-semibold px-2 ring-2 ring-inset ring-slate-500 text-slate-500 dark:text-slate-100 dark:ring-0 dark:bg-slate-500">
-        1x
-      </button>
-    </div> -->
-    </div>
+        </button>
+      </div>
+    </dl>
 
   </div>
+
+</div>
